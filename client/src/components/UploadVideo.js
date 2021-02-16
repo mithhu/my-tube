@@ -34,7 +34,7 @@ function UploadVideo() {
       const url = await uploadMedia({
         type: "video",
         file,
-        preset: "your-video-preset",
+        preset: "dtqpwral",
       });
 
       const extension = path.extname(url);
