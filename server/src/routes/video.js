@@ -468,7 +468,7 @@ async function getVideo(req, res, next) {
       },
     });
 
-    isSubscribed = await prisma.subscription.findFirst({
+    isSubscribed = await prisma.subscriptions.findFirst({
       where: {
         subscriberId: {
           equals: req.user.id,
@@ -514,7 +514,7 @@ async function getVideo(req, res, next) {
     },
   });
 
-  const subscribersCount = await prisma.subscription.count({
+  const subscribersCount = await prisma.subscriptions.count({
     where: {
       subscribedToId: {
         equals: video.userId,

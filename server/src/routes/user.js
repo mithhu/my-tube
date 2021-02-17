@@ -83,7 +83,7 @@ async function toggleSubscribe(req, res, next) {
     });
   }
 
-  const isSubscribed = await prisma.subscription.findFirst({
+  const isSubscribed = await prisma.subscriptions.findFirst({
     where: {
       subscriberId: {
         equals: req.user.id,
@@ -95,13 +95,13 @@ async function toggleSubscribe(req, res, next) {
   });
 
   if (isSubscribed) {
-    await prisma.subscription.delete({
+    await prisma.subscriptions.delete({
       where: {
         id: isSubscribed.id,
       },
     });
   } else {
-    await prisma.subscription.create({
+    await prisma.subscriptions.create({
       data: {
         subscriber: {
           connect: {
@@ -121,7 +121,7 @@ async function toggleSubscribe(req, res, next) {
 }
 
 async function getFeed(req, res) {
-  const subscribedTo = await prisma.subscription.findMany({
+  const subscribedTo = await prisma.subscriptions.findMany({
     where: {
       subscriberId: {
         equals: req.user.id,
@@ -176,7 +176,7 @@ async function searchUser(req, res, next) {
   }
 
   for (const user of users) {
-    const subscribersCount = await prisma.subscription.count({
+    const subscribersCount = await prisma.subscriptions.count({
       where: {
         subscribedToId: {
           equals: user.id,
@@ -196,7 +196,7 @@ async function searchUser(req, res, next) {
     if (req.user) {
       isMe = req.user.id === user.id;
 
-      isSubscribed = await prisma.subscription.findFirst({
+      isSubscribed = await prisma.subscriptions.findFirst({
         where: {
           AND: {
             subscriberId: {
@@ -234,7 +234,7 @@ async function getRecommendedChannels(req, res) {
   }
 
   for (const channel of channels) {
-    const subscribersCount = await prisma.subscription.count({
+    const subscribersCount = await prisma.subscriptions.count({
       where: {
         subscribedToId: {
           equals: channel.id,
@@ -248,7 +248,7 @@ async function getRecommendedChannels(req, res) {
       },
     });
 
-    const isSubscribed = await prisma.subscription.findFirst({
+    const isSubscribed = await prisma.subscriptions.findFirst({
       where: {
         AND: {
           subscriberId: {
@@ -283,7 +283,7 @@ async function getProfile(req, res, next) {
     });
   }
 
-  const subscribersCount = await prisma.subscription.count({
+  const subscribersCount = await prisma.subscriptions.count({
     where: {
       subscribedToId: {
         equals: user.id,
@@ -297,7 +297,7 @@ async function getProfile(req, res, next) {
   if (req.user) {
     isMe = req.user.id === user.id;
 
-    isSubscribed = await prisma.subscription.findFirst({
+    isSubscribed = await prisma.subscriptions.findFirst({
       where: {
         AND: {
           subscriberId: {
@@ -311,7 +311,7 @@ async function getProfile(req, res, next) {
     });
   }
 
-  const subscribedTo = await prisma.subscription.findMany({
+  const subscribedTo = await prisma.subscriptions.findMany({
     where: {
       subscriberId: {
         equals: user.id,
@@ -330,7 +330,7 @@ async function getProfile(req, res, next) {
   });
 
   for (const channel of channels) {
-    const subscribersCount = await prisma.subscription.count({
+    const subscribersCount = await prisma.subscriptions.count({
       where: {
         subscribedToId: {
           equals: channel.id,
